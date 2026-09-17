@@ -6,7 +6,7 @@ WIP_ALIAS=$(cat <<'EOF'
 	tree=$(git write-tree)
 	git add -u
 	if [ "$#" -gt 0 ]; then git add -- "$@"; fi
-	if ! git commit -q -m wip -m "Wip-Index: $tree"; then
+	if ! git commit -m wip -m "Wip-Index: $tree"; then
 		return 1
 	fi
 	git update-ref "refs/wip/$tree" "$tree"
@@ -31,6 +31,8 @@ UNWIP_ALIAS=$(cat <<'EOF'
 	fi
 	git read-tree "$tree"
 	git update-ref -d "refs/wip/$tree"
+	echo "Restored:"
+	git status --short
 }; f
 EOF
 )
